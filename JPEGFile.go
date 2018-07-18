@@ -25,7 +25,7 @@ func (output *JPEGFile) Save(avatar *MetaImage, baseName string) error {
 	suppliedHeight := img.Bounds().Dy()
 	fileName := path.Join(output.Directory, baseName+".jpg")
 
-	if suppliedWidth != output.Width || suppliedHeight != output.Height {
+	if (output.Width != 0 && suppliedWidth != output.Width) || (output.Height != 0 && suppliedHeight != output.Height) {
 		// Resize & crop
 		img = imaging.Fill(img, output.Width, output.Height, imaging.Center, imaging.Lanczos)
 	} else if avatar.Extension() == ".jpg" {
