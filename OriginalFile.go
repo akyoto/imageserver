@@ -7,6 +7,7 @@ import (
 	"image/jpeg"
 	"image/png"
 	"io/ioutil"
+	"os"
 	"path"
 
 	"github.com/disintegration/imaging"
@@ -62,4 +63,12 @@ func (output *OriginalFile) Save(avatar *MetaImage, baseName string) error {
 	// Write to file
 	fileName := path.Join(output.Directory, baseName+extension)
 	return ioutil.WriteFile(fileName, data, 0644)
+}
+
+// Delete deletes the file from the file system.
+func (output *OriginalFile) Delete(baseName string) error {
+	os.Remove(path.Join(output.Directory, baseName+".jpg"))
+	os.Remove(path.Join(output.Directory, baseName+".png"))
+	os.Remove(path.Join(output.Directory, baseName+".gif"))
+	return nil
 }

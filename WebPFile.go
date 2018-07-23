@@ -31,6 +31,11 @@ func (output *WebPFile) Save(avatar *MetaImage, baseName string) error {
 	return saveWebP(img, fileName, output.Quality)
 }
 
+// Delete deletes the file from the file system.
+func (output *WebPFile) Delete(baseName string) error {
+	return os.Remove(path.Join(output.Directory, baseName+".webp"))
+}
+
 // saveWebP saves an image as a file in WebP format.
 func saveWebP(img image.Image, out string, quality float32) error {
 	file, writeErr := os.Create(out)

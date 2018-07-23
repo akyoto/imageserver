@@ -36,6 +36,11 @@ func (output *JPEGFile) Save(avatar *MetaImage, baseName string) error {
 	return saveJPEG(img, fileName, output.Quality)
 }
 
+// Delete deletes the file from the file system.
+func (output *JPEGFile) Delete(baseName string) error {
+	return os.Remove(path.Join(output.Directory, baseName+".jpg"))
+}
+
 // saveJPEG saves an image as a file in JPEG format.
 func saveJPEG(img image.Image, out string, quality float32) error {
 	file, writeErr := os.Create(out)
