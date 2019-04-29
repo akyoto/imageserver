@@ -52,4 +52,5 @@ func saveWebP(img image.Image, out string, quality float32) error {
 	})
 
 	return encodeErr
+	// return errors.New("WebP disabled")
 }
