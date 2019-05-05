@@ -68,6 +68,11 @@ func onRequest(response http.ResponseWriter, request *http.Request) {
 			fmt.Println(err)
 			return
 		}
+
+	default:
+		response.WriteHeader(http.StatusBadRequest)
+		fmt.Printf("Unknown content type: %s\n", request.Header.Get("Content-Type"))
+		return
 	}
 
 	// Encode
