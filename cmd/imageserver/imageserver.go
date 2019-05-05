@@ -9,8 +9,10 @@ import (
 	"image/png"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/chai2010/webp"
+	"github.com/disintegration/imaging"
 )
 
 var port string
@@ -73,6 +75,14 @@ func onRequest(response http.ResponseWriter, request *http.Request) {
 		response.WriteHeader(http.StatusBadRequest)
 		fmt.Printf("Unknown content type: %s\n", request.Header.Get("Content-Type"))
 		return
+	}
+
+	// Resize & crop
+	width, _ := strconv.Atoi(request.Header.Get("Image-Width"))
+	height, _ := strconv.Atoi(request.Header.Get("Image-Height"))
+
+	if (width != 0 || height != 0) && (img.Bounds().Dx() != width || img.Bounds().Dy() != height) {
+		img = imaging.Fill(img, width, height, imaging.Center, imaging.Lanczos)
 	}
 
 	// Encode
