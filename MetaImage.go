@@ -3,9 +3,16 @@ package imageoutput
 import (
 	"fmt"
 	"image"
+	"os"
+
+	"github.com/aerogo/http/client"
 )
 
-// MetaImage represents a single image with the name of the format and the original byte buffer.
+// ServerPort is the default port
+var ServerPort = "7000"
+
+// MetaImage represents a single image with the name of the format
+// and the original byte buffer that was used to create it.
 type MetaImage struct {
 	Image  image.Image
 	Data   []byte
@@ -13,8 +20,8 @@ type MetaImage struct {
 }
 
 // Extension returns the file extension of the image.
-func (avatar *MetaImage) Extension() string {
-	switch avatar.Format {
+func (meta *MetaImage) Extension() string {
+	switch meta.Format {
 	case "jpg", "jpeg":
 		return ".jpg"
 	case "png":
@@ -27,6 +34,34 @@ func (avatar *MetaImage) Extension() string {
 }
 
 // String returns a text representation of the format, width and height.
-func (avatar *MetaImage) String() string {
-	return fmt.Sprint(avatar.Format, " | ", avatar.Image.Bounds().Dx(), "x", avatar.Image.Bounds().Dy())
+func (meta *MetaImage) String() string {
+	return fmt.Sprint(meta.Format, " | ", meta.Image.Bounds().Dx(), "x", meta.Image.Bounds().Dy())
+}
+
+// ConvertToFile sends a request to the server and saves the resulting image in the given format.
+// Format can be one of the following: png, jpeg, gif, webp
+func (meta *MetaImage) ConvertToFile(format string, fileName string) error {
+	request := client.Get("http://127.0.0.1:" + ServerPort + "/")
+	request.Header("Content-Type", meta.Format)
+	request.Header("Accept-Type", "image/"+format)
+	request.Body(meta.Data)
+	response, err := request.End()
+
+	if err != nil {
+		return err
+	}
+
+	if !response.Ok() {
+		return fmt.Errorf("Status: %d", response.StatusCode())
+	}
+
+	file, err := os.Create(fileName)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = response.WriteTo(file)
+	file.Close()
+	return err
 }

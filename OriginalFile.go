@@ -20,20 +20,20 @@ type OriginalFile struct {
 	Height    int
 }
 
-// Save writes the original avatar to the file system.
-func (output *OriginalFile) Save(avatar *MetaImage, baseName string) error {
+// Save writes the original meta to the file system.
+func (output *OriginalFile) Save(meta *MetaImage, baseName string) error {
 	// Determine file extension
-	extension := avatar.Extension()
+	extension := meta.Extension()
 
 	if extension == "" {
-		return errors.New("Unknown format: " + avatar.Format)
+		return errors.New("Unknown format: " + meta.Format)
 	}
 
 	modified := false
 
 	// Resize if needed
-	data := avatar.Data
-	img := avatar.Image
+	data := meta.Data
+	img := meta.Image
 
 	if (output.Width != 0 || output.Height != 0) && (img.Bounds().Dx() > output.Width || img.Bounds().Dy() > output.Height) {
 		img = imaging.Fill(img, output.Width, output.Height, imaging.Center, imaging.Lanczos)
@@ -41,16 +41,16 @@ func (output *OriginalFile) Save(avatar *MetaImage, baseName string) error {
 	}
 
 	if modified {
-		buffer := new(bytes.Buffer)
+		buffer := bytes.Buffer{}
 
 		var err error
 		switch extension {
 		case ".jpg":
-			err = jpeg.Encode(buffer, img, nil)
+			err = jpeg.Encode(&buffer, img, nil)
 		case ".png":
-			err = png.Encode(buffer, img)
+			err = png.Encode(&buffer, img)
 		case ".gif":
-			err = gif.Encode(buffer, img, nil)
+			err = gif.Encode(&buffer, img, nil)
 		}
 
 		if err != nil {
