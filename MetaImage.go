@@ -1,4 +1,4 @@
-package imageoutput
+package imageserver
 
 import (
 	"fmt"

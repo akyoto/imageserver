@@ -1,4 +1,4 @@
-package imageoutput
+package imageserver
 
 // Output represents a system that saves an image locally (in database or as a file, e.g.)
 type Output interface {

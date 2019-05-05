@@ -1,5 +1,7 @@
 github.com/aerogo/http v1.0.3 h1:vf6A+Igme5OHQPaP3a00uPDS0oxsx3puMA23d1NsWDM=
 github.com/aerogo/http v1.0.3/go.mod h1:B1igUmMLpE6KabMpc9reHCJJNUOJ2U/PR9s1fF3TpPQ=
+github.com/chai2010/webp v1.1.0 h1:4Ei0/BRroMF9FaXDG2e4OxwFcuW2vcXd+A6tyqTJUQQ=
+github.com/chai2010/webp v1.1.0/go.mod h1:LP12PG5IFmLGHUU26tBiCBKnghxx3toZFwDjOYvd3Ow=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

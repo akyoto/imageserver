@@ -1,3 +1,3 @@
-# imageoutput
+# imageserver
 
-Generic image output library.
+An HTTP service that converts image formats.
