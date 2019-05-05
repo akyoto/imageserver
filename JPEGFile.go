@@ -10,7 +10,7 @@ type JPEGFile struct {
 	Directory string
 	Width     int
 	Height    int
-	Quality   float64
+	Quality   int
 }
 
 // Save writes the image in JPEG format to the file system.

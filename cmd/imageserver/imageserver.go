@@ -99,7 +99,7 @@ func onRequest(response http.ResponseWriter, request *http.Request) {
 	}
 
 	// Encoder options
-	quality, _ := strconv.ParseFloat(request.Header.Get("Image-Quality"), 64)
+	quality, _ := strconv.Atoi(request.Header.Get("Image-Quality"))
 
 	// Encode
 	switch outputEncoding {
@@ -117,7 +117,7 @@ func onRequest(response http.ResponseWriter, request *http.Request) {
 		response.Header().Set("Content-Type", "image/jpeg")
 
 		err = jpeg.Encode(response, img, &jpeg.Options{
-			Quality: int(quality),
+			Quality: quality,
 		})
 
 		if err != nil {

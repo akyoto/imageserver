@@ -10,7 +10,7 @@ type WebPFile struct {
 	Directory string
 	Width     int
 	Height    int
-	Quality   float64
+	Quality   int
 }
 
 // Save writes the image in WebP format to the file system.
