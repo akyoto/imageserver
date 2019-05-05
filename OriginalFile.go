@@ -2,7 +2,6 @@ package imageserver
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"path"
 )
@@ -25,7 +24,6 @@ func (output *OriginalFile) Save(metaImage *MetaImage, baseName string) error {
 	}
 
 	fileName := path.Join(output.Directory, baseName+extension)
-	fmt.Println(output.Width, output.Height)
 	return metaImage.ConvertToFile(metaImage.Format, output.Width, output.Height, output.Quality, fileName)
 }
 
