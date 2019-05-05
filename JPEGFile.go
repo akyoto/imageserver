@@ -15,7 +15,7 @@ type JPEGFile struct {
 
 // Save writes the image in JPEG format to the file system.
 func (output *JPEGFile) Save(metaImage *MetaImage, baseName string) error {
-	fileName := path.Join(output.Directory, baseName+".webp")
+	fileName := path.Join(output.Directory, baseName+".jpg")
 	return metaImage.ConvertToFile("jpeg", output.Width, output.Height, output.Quality, fileName)
 }
 
