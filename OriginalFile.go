@@ -2,6 +2,7 @@ package imageserver
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path"
 )
@@ -11,6 +12,7 @@ type OriginalFile struct {
 	Directory string
 	Width     int
 	Height    int
+	Quality   int
 }
 
 // Save writes the original meta to the file system.
@@ -23,7 +25,8 @@ func (output *OriginalFile) Save(metaImage *MetaImage, baseName string) error {
 	}
 
 	fileName := path.Join(output.Directory, baseName+extension)
-	return metaImage.ConvertToFile(metaImage.Format, output.Width, output.Height, 0, fileName)
+	fmt.Println(output.Width, output.Height)
+	return metaImage.ConvertToFile(metaImage.Format, output.Width, output.Height, output.Quality, fileName)
 }
 
 // Delete deletes the file from the file system.

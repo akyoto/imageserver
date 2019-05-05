@@ -100,6 +100,7 @@ func onRequest(response http.ResponseWriter, request *http.Request) {
 
 	// Encoder options
 	quality, _ := strconv.Atoi(request.Header.Get("Image-Quality"))
+	fmt.Println(inputEncoding, outputEncoding, width, height, quality)
 
 	// Encode
 	switch outputEncoding {
