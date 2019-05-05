@@ -33,8 +33,11 @@ func onRequest(response http.ResponseWriter, request *http.Request) {
 	var img image.Image
 	var err error
 
+	inputEncoding := request.Header.Get("Content-Type")
+	outputEncoding := request.Header.Get("Accept-Type")
+
 	// Decode
-	switch request.Header.Get("Content-Type") {
+	switch inputEncoding {
 	case "image/png":
 		img, err = png.Decode(request.Body)
 
@@ -77,16 +80,29 @@ func onRequest(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	// Modified flag
+	modified := false
+
 	// Resize & crop
 	width, _ := strconv.Atoi(request.Header.Get("Image-Width"))
 	height, _ := strconv.Atoi(request.Header.Get("Image-Height"))
 
-	if (width != 0 || height != 0) && (img.Bounds().Dx() != width || img.Bounds().Dy() != height) {
+	if (width != 0 && img.Bounds().Dx() != width) || (height != 0 && img.Bounds().Dy() != height) {
 		img = imaging.Fill(img, width, height, imaging.Center, imaging.Lanczos)
+		modified = true
 	}
 
+	// If input and output encoding are the same, and the size is also unmodified, save the file as is
+	if !modified && (inputEncoding == outputEncoding || outputEncoding == "") {
+		response.WriteHeader(http.StatusNotModified)
+		return
+	}
+
+	// Encoder options
+	quality, _ := strconv.ParseFloat(request.Header.Get("Image-Quality"), 64)
+
 	// Encode
-	switch request.Header.Get("Accept-Type") {
+	switch outputEncoding {
 	case "image/png":
 		response.Header().Set("Content-Type", "image/png")
 		err = png.Encode(response, img)
@@ -99,7 +115,10 @@ func onRequest(response http.ResponseWriter, request *http.Request) {
 
 	case "image/jpeg":
 		response.Header().Set("Content-Type", "image/jpeg")
-		err = jpeg.Encode(response, img, nil)
+
+		err = jpeg.Encode(response, img, &jpeg.Options{
+			Quality: int(quality),
+		})
 
 		if err != nil {
 			response.WriteHeader(http.StatusInternalServerError)
@@ -119,7 +138,10 @@ func onRequest(response http.ResponseWriter, request *http.Request) {
 
 	case "image/webp":
 		response.Header().Set("Content-Type", "image/webp")
-		err = webp.Encode(response, img, nil)
+
+		err = webp.Encode(response, img, &webp.Options{
+			Quality: float32(quality),
+		})
 
 		if err != nil {
 			response.WriteHeader(http.StatusInternalServerError)

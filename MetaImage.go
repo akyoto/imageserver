@@ -3,6 +3,8 @@ package imageserver
 import (
 	"fmt"
 	"image"
+	"io/ioutil"
+	"net/http"
 	"os"
 
 	"github.com/aerogo/http/client"
@@ -22,7 +24,7 @@ type MetaImage struct {
 // Extension returns the file extension of the image.
 func (meta *MetaImage) Extension() string {
 	switch meta.Format {
-	case "jpg", "jpeg":
+	case "jpeg":
 		return ".jpg"
 	case "png":
 		return ".png"
@@ -40,17 +42,22 @@ func (meta *MetaImage) String() string {
 
 // ConvertToFile sends a request to the server and saves the resulting image in the given format.
 // Format can be one of the following: png, jpeg, gif, webp
-func (meta *MetaImage) ConvertToFile(format string, width int, height int, fileName string) error {
+func (meta *MetaImage) ConvertToFile(format string, width int, height int, quality float64, fileName string) error {
 	request := client.Get("http://127.0.0.1:" + ServerPort + "/")
 	request.Header("Content-Type", "image/"+meta.Format)
 	request.Header("Accept-Type", "image/"+format)
 	request.Header("Image-Width", fmt.Sprintf("%d", width))
 	request.Header("Image-Height", fmt.Sprintf("%d", height))
+	request.Header("Image-Quality", fmt.Sprintf("%f", quality))
 	request.Body(meta.Data)
 	response, err := request.End()
 
 	if err != nil {
 		return err
+	}
+
+	if response.StatusCode() == http.StatusNotModified {
+		return ioutil.WriteFile(fileName, meta.Data, 0644)
 	}
 
 	if !response.Ok() {

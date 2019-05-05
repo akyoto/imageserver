@@ -10,13 +10,13 @@ type WebPFile struct {
 	Directory string
 	Width     int
 	Height    int
-	Quality   float32
+	Quality   float64
 }
 
 // Save writes the image in WebP format to the file system.
 func (output *WebPFile) Save(metaImage *MetaImage, baseName string) error {
 	fileName := path.Join(output.Directory, baseName+".webp")
-	return metaImage.ConvertToFile("webp", output.Width, output.Height, fileName)
+	return metaImage.ConvertToFile("webp", output.Width, output.Height, output.Quality, fileName)
 }
 
 // Delete deletes the file from the file system.
