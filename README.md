@@ -4,7 +4,7 @@
 [![Report][report-image]][report-url]
 [![Tests][tests-image]][tests-url]
 [![Coverage][coverage-image]][coverage-url]
-[![Patreon][patreon-image]][patreon-url]
+[![Sponsor][sponsor-image]][sponsor-url]
 
 An HTTP service that converts image formats.
 
@@ -18,7 +18,7 @@ Please take a look at the [style guidelines](https://github.com/akyoto/quality/b
 | --- | --- | --- |
 | [Cedric Fung](https://github.com/cedricfung) | [Scott Rayapoullé](https://github.com/soulcramer) | [Eduard Urbach](https://eduardurbach.com) |
 
-Want to see [your own name here?](https://www.patreon.com/eduardurbach)
+Want to see [your own name here?](https://github.com/users/akyoto/sponsorship)
 
 [godoc-image]: https://godoc.org/github.com/akyoto/imageserver?status.svg
 [godoc-url]: https://godoc.org/github.com/akyoto/imageserver
@@ -28,5 +28,5 @@ Want to see [your own name here?](https://www.patreon.com/eduardurbach)
 [tests-url]: https://cloud.drone.io/akyoto/imageserver
 [coverage-image]: https://codecov.io/gh/akyoto/imageserver/graph/badge.svg
 [coverage-url]: https://codecov.io/gh/akyoto/imageserver
-[patreon-image]: https://img.shields.io/badge/patreon-donate-green.svg
-[patreon-url]: https://www.patreon.com/eduardurbach
+[sponsor-image]: https://img.shields.io/badge/github-donate-green.svg
+[sponsor-url]: https://github.com/users/akyoto/sponsorship
